@@ -59,27 +59,53 @@ export abstract class MiningRig {
     this.Destroy();
     emitNet('crypto:rigdisasemble', this.RIGID);
   }
+  
+
+  //public RegisterTarget(): void {
+  //  global.exports['qb-target'].AddEntityZone(
+  //    `miningrig-${this.RIGID}`,
+  //    this._entity.Handle,
+  //    {
+  //      name: `miningrig-${this.RIGID}`,
+  //      debug: GetConvar('mojito_debug', '0') == '1',
+  //    },
+  //    {
+  //      distance: 2.0,
+  //      options: [
+  //        {
+  //          label: 'Open Mining Rig',
+  //          icon: 'fas fa-server',
+  //          event: 'crypto:openmenu',
+  //        },
+  //      ],
+  //    },
+  //  );
+  //}
+
 
   public RegisterTarget(): void {
-    global.exports['qb-target'].AddEntityZone(
-      `miningrig-${this.RIGID}`,
-      this._entity.Handle,
-      {
-        name: `miningrig-${this.RIGID}`,
-        debug: GetConvar('mojito_debug', '0') == '1',
-      },
-      {
-        distance: 2.0,
-        options: [
-          {
-            label: 'Open Mining Rig',
-            icon: 'fas fa-server',
-            event: 'crypto:openmenu',
-          },
-        ],
-      },
-    );
+    const entity = this._entity.Handle;
+    const OBJECT = entity;
+  
+    const entityCoords = GetEntityCoords(entity, false);
+    const entitySize = new Vector3(4, 4, 6); 
+    const entityRotation = GetEntityHeading(entity);
+  
+    global.exports.ox_target.addBoxZone({
+      coords: entityCoords,
+      size: entitySize,
+      rotation: entityRotation,
+      debug: false,
+      options: [
+        {
+          icon: 'fas fa-server',
+          label: 'Open Crypto Mining',
+          event: 'crypto:openmenu',
+        },
+      ],
+    });
   }
+  
 
   public Create(): Promise<void> {
     return new Promise((resolve, reject) => {
